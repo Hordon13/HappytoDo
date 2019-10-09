@@ -1,22 +1,36 @@
 <template>
   <div class="main-page-container">
-    <the-header />
+    <the-header/>
+    <todo-list :todos="todos"/>
   </div>
 </template>
 
 <script>
 import TheHeader from "@/components/TheHeader";
+import TodoList from "@/components/TodoList";
+
 export default {
   name: "MainPage",
   components: {
-    TheHeader
+    TheHeader,
+    TodoList
+  }, data() {
+    return {
+      todos: []
+    }
+  },
+  created() {
+    fetch('http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos')
+      .then(res => res.json()
+      .then(data => this.todos = data));
   }
 }
 </script>
 
 <style scoped>
 .main-page-container {
-  height: 100vh;
-  background: #151515;
+  min-height: 100vh;
+  background: #212121;
+  color: white;
 }
 </style>

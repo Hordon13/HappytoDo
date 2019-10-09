@@ -1,13 +1,16 @@
 <template>
   <div id="app">
-    <h1>Hello World</h1>
+    <main-page />
   </div>
 </template>
 
 <script>
+import MainPage from "@/components/pages/MainPage";
+
 export default {
   name: 'app',
   components: {
+    MainPage
   }
 }
 </script>
@@ -25,6 +28,11 @@ export default {
 }
 
 body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  overflow-x: hidden;
+  background: white;
   font-family: 'Montserrat', Helvetica, sans-serif;
   line-height: 1.4;
 }

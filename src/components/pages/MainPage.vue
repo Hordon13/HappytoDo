@@ -1,10 +1,16 @@
 <template>
-  <div class="main-page-container"></div>
+  <div class="main-page-container">
+    <the-header />
+  </div>
 </template>
 
 <script>
+import TheHeader from "@/components/TheHeader";
 export default {
-  name: "MainPage"
+  name: "MainPage",
+  components: {
+    TheHeader
+  }
 }
 </script>
 

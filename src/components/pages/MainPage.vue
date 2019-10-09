@@ -22,7 +22,9 @@ export default {
   created() {
     fetch('http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos')
       .then(res => res.json()
-      .then(data => this.todos = data));
+      .then(data => this.todos = data))
+      // eslint-disable-next-line no-console
+      .catch(err => console.log(err));
   }
 }
 </script>

@@ -12,10 +12,10 @@
         </thead>
         <tbody>
           <tr v-for="todo in todos" :key="todo.id">
-            <td> {{ todo.isCompleted}}</td>
+            <td><input type="checkbox" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
             <td> {{ todo.title }}</td>
-            <td> {{ new Date(todo.createdAt).toLocaleDateString("hu-HU") }}</td>
-            <td> {{ new Date(todo.dueAt).toLocaleDateString("hu-HU") }}</td>
+            <td> {{ todo.createdAt | formatDate }}</td>
+            <td> {{ todo.dueAt | formatDate }}</td>
           </tr>
         </tbody>
       </table>
@@ -26,12 +26,22 @@
 <script>
 export default {
   name: "TodoList",
+  data() {
+    return {
+      todoStatus: false
+    }
+  },
   props: {
     todos: Array
   },
-  method: {
-    formatDate: (date) => {
-      return date;
+  methods: {
+    markComplete(todo) {
+      todo.isCompleted = !todo.isCompleted;
+    }
+  },
+  filters: {
+    formatDate(date) {
+      return new Date(date).toLocaleDateString("hu-HU");
     }
   }
 }

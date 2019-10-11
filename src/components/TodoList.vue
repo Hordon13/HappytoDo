@@ -8,6 +8,7 @@
           <th>Title</th>
           <th>Created</th>
           <th>Due Date</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -16,6 +17,10 @@
             <td> {{ todo.title }}</td>
             <td> {{ todo.createdAt | formatDate }}</td>
             <td> {{ todo.dueAt | formatDate }}</td>
+            <td>
+              <button>Edit</button>
+              <button @click="deleteTodo(todo.id)">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -37,6 +42,9 @@ export default {
   methods: {
     markComplete(todo) {
       todo.isCompleted = !todo.isCompleted;
+    },
+    deleteTodo(id) {
+      this.$emit('delete:todo', id);
     }
   },
   filters: {

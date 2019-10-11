@@ -1,8 +1,8 @@
 <template>
   <div class="main-page-container">
     <the-header/>
-    <todo-list :todos="todos"/>
-    <todo-editor @add:todo="addTodo" />
+    <todo-list :todos="todos" @delete:todo="deleteTodo"/>
+    <todo-editor @add:todo="addTodo"/>
   </div>
 </template>
 
@@ -24,35 +24,40 @@ export default {
   },
   methods: {
     addTodo(todo) {
-      const id = this.todos.length + 1;
+      const id = this.todos.length + 1; //is it generated auto?
       const createdAt = new Date();
       const isCompleted = false;
       const newTodo = {...todo, id, createdAt, isCompleted};
 
-      // to see my content opposed to the generated one from MockAPI
-      this.todos = [...this.todos, newTodo];
-
-      /*
-      // otherwise I would send my data like this
-      // but this generates a random entry
       fetch('http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos', {
         method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(newTodo)
       })
         .then(res => res.json())
         .then(data => this.todos = [...this.todos, data])
         // eslint-disable-next-line no-console
         .catch(err => console.log(err));
-      */
-    },
-    completeTodo() {
 
+    },
+    deleteTodo(id) {
+      fetch(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`, {
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(() => this.todos = this.todos.filter(todo => todo.id !== id))
+        // eslint-disable-next-line no-console
+        .catch(err => console.log(err));
     }
   },
   created() {
     fetch('http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos')
       .then(res => res.json()
-      .then(data => this.todos = data))
+        .then(data => this.todos = data))
       // eslint-disable-next-line no-console
       .catch(err => console.log(err));
   }

@@ -1,8 +1,8 @@
 <template>
   <div class="main-page-container">
     <the-header/>
-    <todo-list :todos="todos" @delete:todo="deleteTodo"/>
-    <todo-editor @add:todo="addTodo"/>
+    <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode"/>
+    <todo-editor :to-edit="toEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
 import TheHeader from "@/components/TheHeader";
 import TodoList from "@/components/TodoList";
 import TodoEditor from "@/components/TodoEditor";
+import ApiService from "@/services/api.service";
 
 export default {
   name: "MainPage",
@@ -19,47 +20,37 @@ export default {
     TodoEditor
   }, data() {
     return {
-      todos: []
+      todos: [],
+      toEdit: null,
+      cachedTodo: null
     }
   },
   methods: {
-    addTodo(todo) {
-      const id = this.todos.length + 1; //is it generated auto?
-      const createdAt = new Date();
-      const isCompleted = false;
-      const newTodo = {...todo, id, createdAt, isCompleted};
-
-      fetch('http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newTodo)
-      })
-        .then(res => res.json())
+    addTodo(newTodo) {
+      ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo)
         .then(data => this.todos = [...this.todos, data])
-        // eslint-disable-next-line no-console
-        .catch(err => console.log(err));
-
     },
     deleteTodo(id) {
-      fetch(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`, {
-        method: 'delete',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`)
         .then(() => this.todos = this.todos.filter(todo => todo.id !== id))
-        // eslint-disable-next-line no-console
-        .catch(err => console.log(err));
-    }
+    },
+    editMode(todo) {
+      this.toEdit = todo;
+      this.cachedTodo = Object.assign({}, todo);
+    },
+    updateTodo(updatedTodo) {
+      ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${updatedTodo.id}`, updatedTodo)
+        .then(() => this.todos = this.todos.map(todo => todo.id === this.toEdit.id ? updatedTodo : todo))
+        .then(this.toEdit = null)
+    },
+    cancelEdit(canceledTodo) {
+      Object.assign(canceledTodo, this.cachedTodo);
+      this.toEdit = null;
+    },
   },
   created() {
-    fetch('http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos')
-      .then(res => res.json()
-        .then(data => this.todos = data))
-      // eslint-disable-next-line no-console
-      .catch(err => console.log(err));
+    ApiService.get("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos")
+      .then(data => this.todos = data);
   }
 }
 </script>

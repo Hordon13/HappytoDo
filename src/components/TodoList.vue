@@ -18,7 +18,7 @@
             <td> {{ todo.createdAt | formatDate }}</td>
             <td> {{ todo.dueAt | formatDate }}</td>
             <td>
-              <button>Edit</button>
+              <button @click="editTodo(todo)">Edit</button>
               <button @click="deleteTodo(todo.id)">Delete</button>
             </td>
           </tr>
@@ -31,13 +31,8 @@
 <script>
 export default {
   name: "TodoList",
-  data() {
-    return {
-      todoStatus: false
-    }
-  },
   props: {
-    todos: Array
+    todos: Array,
   },
   methods: {
     markComplete(todo) {
@@ -45,6 +40,9 @@ export default {
     },
     deleteTodo(id) {
       this.$emit('delete:todo', id);
+    },
+    editTodo(todo) {
+      this.$emit('edit:todo', todo);
     }
   },
   filters: {

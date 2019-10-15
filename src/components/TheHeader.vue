@@ -18,10 +18,12 @@ header {
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
+  padding: 20px 50px;
 }
 
 h1 {
-  color: darkturquoise;
+  color: #63c8f1;
   font-size: 48px;
   line-height: 0.9;
   text-transform: lowercase;

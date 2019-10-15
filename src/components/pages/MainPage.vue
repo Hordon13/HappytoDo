@@ -1,8 +1,10 @@
 <template>
   <div class="main-page-container">
     <the-header/>
-    <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode"/>
-    <todo-editor :to-edit="toEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
+    <div class="main-content-wrapper">
+      <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode"/>
+      <todo-editor :to-edit="toEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
+    </div>
   </div>
 </template>
 
@@ -56,13 +58,23 @@ export default {
 </script>
 
 <style scoped>
+
 .main-page-container {
   min-height: 100vh;
-  background: #212121;
-  color: white;
+  background: #ebebeb;
+  color: #000000;
 }
 
-.todo-editor-container {
-  margin-top: 50px;
+.main-content-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>

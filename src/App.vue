@@ -36,4 +36,12 @@ body {
   font-family: 'Montserrat', Helvetica, sans-serif;
   line-height: 1.4;
 }
+
+::selection {
+  background: #74cef3;
+}
+
+::-moz-selection {
+  background: #74cef3;
+}
 </style>

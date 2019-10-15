@@ -54,13 +54,14 @@ export default {
     cancelEdit() {
       this.$emit('cancel:edit', this.toEdit)
     }
-  },
-  computed: {
-
   }
 }
 </script>
 
 <style scoped>
+
+.todo-editor-container {
+  visibility: hidden;
+}
 
 </style>

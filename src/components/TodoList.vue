@@ -48,6 +48,7 @@ export default {
   methods: {
     markComplete(todo) {
       todo.isCompleted = !todo.isCompleted;
+      this.$emit('done:todo', todo);
     },
     deleteTodo(id) {
       this.$emit('delete:todo', id);
@@ -68,7 +69,7 @@ export default {
 .todo-list-container {
   display: block;
   width: 60%;
-  height: 420px;
+  height: 400px;
   margin: 10px auto;
   padding: 0 40px 5px;
   background: #fafafa;
@@ -117,6 +118,12 @@ table {
 
 tr {
   height: 45px;
+}
+
+td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 th {

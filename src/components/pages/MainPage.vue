@@ -2,7 +2,7 @@
   <div class="main-page-container">
     <the-header/>
     <div class="main-content-wrapper">
-      <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode"/>
+      <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode" @done:todo="updateTodo"/>
       <todo-editor :to-edit="toEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
     </div>
   </div>

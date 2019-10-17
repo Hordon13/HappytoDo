@@ -23,7 +23,7 @@
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
           <td id="title"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>
-          <td> {{ todo.dueAt | formatDate }}</td>
+          <td> {{ todo.dueAt }}</td>
           <td>
             <button id="editBtn" title="edit this todo" @click="editTodo(todo)">
               <i class="fas fa-pen"></i>
@@ -118,12 +118,6 @@ table {
 
 tr {
   height: 45px;
-}
-
-td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 th {

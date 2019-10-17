@@ -29,10 +29,14 @@ export default {
   },
   methods: {
     addTodo(newTodo) {
-      const todoList = document.getElementById("todo-list");
-      ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo)
-        .then(data => this.todos = [...this.todos, data])
-        .then(() => todoList.scrollTop = todoList.scrollHeight);
+      if (newTodo.title !== '') {
+        if (newTodo.dueAt === '')
+          newTodo.dueAt = "Someday";
+        const todoList = document.getElementById("todo-list");
+        ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo)
+          .then(data => this.todos = [...this.todos, data])
+          .then(() => todoList.scrollTop = todoList.scrollHeight);
+      }
     },
     deleteTodo(id) {
       ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`)
@@ -60,7 +64,6 @@ export default {
 </script>
 
 <style scoped>
-
 .main-page-container {
   min-height: 100vh;
   background-color: #63c8f1;

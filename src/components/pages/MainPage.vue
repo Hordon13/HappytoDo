@@ -29,8 +29,10 @@ export default {
   },
   methods: {
     addTodo(newTodo) {
+      const todoList = document.getElementById("todo-list");
       ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo)
         .then(data => this.todos = [...this.todos, data])
+        .then(() => todoList.scrollTop = todoList.scrollHeight);
     },
     deleteTodo(id) {
       ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`)
@@ -61,17 +63,14 @@ export default {
 
 .main-page-container {
   min-height: 100vh;
-  background: #ebebeb;
-  color: #000000;
+  background-color: #63c8f1;
+  background-image: url("../../assets/bg.png");
+  color: black;
 }
 
 .main-content-wrapper {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 30px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-around;

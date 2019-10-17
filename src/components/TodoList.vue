@@ -1,7 +1,14 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-table">
+    <div class="todo-table" id="todo-list">
       <table>
+        <colgroup>
+          <col id="col1">
+          <col id="col2">
+          <col id="col3">
+          <col id="col4">
+          <col id="col5">
+        </colgroup>
         <thead>
         <tr>
           <th>Done</th>
@@ -59,10 +66,21 @@ export default {
 
 <style scoped>
 .todo-list-container {
-  height: 400px;
+  display: block;
+  width: 60%;
+  height: 420px;
+  margin: 10px auto;
+  padding: 0 40px 5px;
+  background: #fafafa;
+  border-radius: 10px;
+  box-shadow: 4px 5px 15px -4px rgba(0, 0, 0, 0.3);
 }
 
 .todo-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   height: 100%;
   overflow: auto;
   scroll-behavior: smooth;
@@ -74,10 +92,27 @@ export default {
 }
 
 table {
-  border-radius: 20px;
+  width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   text-align: center;
   position: relative;
+}
+
+#col1 {
+  width: 10%;
+}
+
+#col2 {
+  width: 40%;
+}
+
+#col3, #col4 {
+  width: 17.5%;
+}
+
+#col5 {
+  width: 15%;
 }
 
 tr {
@@ -86,7 +121,7 @@ tr {
 
 th {
   position: sticky;
-  background: #63c8f1;
+  background: #50c1f2;
   color: white;
   font-size: 18px;
   z-index: 1;

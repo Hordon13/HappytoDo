@@ -18,7 +18,10 @@
                   overlay
                   no-value-to-custom-elem
           >
-            <button type="button">{{ todoItem.dueAt === '' ? "Due Date" : todoItem.dueAt}}</button>
+            <button type="button">
+              <i class="far fa-calendar-check"></i>
+              {{ todoItem.dueAt === '' ? "Due Date" : todoItem.dueAt}}
+            </button>
           </date-time-picker>
         </div>
       </div>
@@ -27,7 +30,6 @@
         <button class="cancel" type="reset">reset</button>
       </div>
     </form>
-
     <form class="form-wrapper" v-else @submit.prevent="updateTodo">
       <h3>edit this todo</h3>
       <div class="input-wrapper">
@@ -46,7 +48,10 @@
                   overlay
                   no-value-to-custom-elem
           >
-            <button type="button">{{ toEdit.dueAt === 'Someday' ? "Someday" : toEdit.dueAt}}</button>
+            <button type="button">
+              <i class="far fa-calendar-check"></i>
+              {{ toEdit.dueAt === 'Someday' ? "Someday" : toEdit.dueAt}}
+            </button>
           </date-time-picker>
         </div>
       </div>
@@ -173,8 +178,8 @@ h3 {
   outline: none;
 }
 
-.datePicker button::placeholder {
-  color: #eb2d53;
+.datePicker button i {
+  margin-right: 5px;
 }
 
 ::placeholder {

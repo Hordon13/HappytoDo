@@ -23,7 +23,7 @@
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
           <td id="title"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>
-          <td> {{ todo.dueAt }}</td>
+          <td :class="{dueToday: isDueToday(todo.dueAt)}"> {{ todo.dueAt }}</td>
           <td>
             <button id="editBtn" title="edit this todo" @click="editTodo(todo)">
               <i class="fas fa-pen"></i>
@@ -55,6 +55,9 @@ export default {
     },
     editTodo(todo) {
       this.$emit('edit:todo', todo);
+    },
+    isDueToday(date) {
+      return date === new Date().toLocaleDateString("hu-HU");
     }
   },
   filters: {
@@ -81,7 +84,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   height: 100%;
   overflow: auto;
   scroll-behavior: smooth;
@@ -136,6 +138,11 @@ tbody {
 
 td {
   border-bottom: #dedede dashed 1px;
+}
+
+.dueToday {
+  color: #eb2d53;
+  font-weight: bold;
 }
 
 input[type="checkbox"] {

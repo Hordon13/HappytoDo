@@ -1,13 +1,13 @@
 <template>
   <div class="todo-editor-container">
     <form class="form-wrapper" v-if="toEdit === null" @submit.prevent="submitTodo">
-      <h3>add a new todo</h3>
+      <h3>Add a New ToDo</h3>
       <div class="input-wrapper">
         <input v-model="todoItem.title" type="text" placeholder="What to do?">
         <div class="datePicker">
           <date-time-picker
                   v-model="todoItem.dueAt"
-                  format="YYYY. MM. DD"
+                  format="YYYY. MM. DD."
                   formatted="l"
                   color="#50c1f2"
                   :min-date="today"
@@ -37,7 +37,7 @@
         <div class="datePicker">
           <date-time-picker
                   v-model="toEdit.dueAt"
-                  format="YYYY. MM. DD"
+                  format="YYYY. MM. DD."
                   formatted="l"
                   color="#50c1f2"
                   :min-date="today"
@@ -197,7 +197,8 @@ h3 {
   appearance: none;
   color: white;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 900;
+  text-transform: uppercase;
   margin: 0 10px;
   padding: 8px 25px;
   border-radius: 20px;

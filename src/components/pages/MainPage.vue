@@ -44,8 +44,14 @@ export default {
         .then(() => this.todos = this.todos.filter(todo => todo.id !== id))
     },
     editMode(todo) {
-      this.toEdit = todo;
-      this.cachedTodo = Object.assign({}, todo);
+      if (this.toEdit !== null) {
+        ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${this.toEdit.id}`, this.toEdit)
+          .then(() => this.toEdit = todo)
+          .then(() => this.cachedTodo = Object.assign({}, todo))
+      } else {
+        this.toEdit = todo;
+        this.cachedTodo = Object.assign({}, todo);
+      }
     },
     updateTodo(updatedTodo) {
       ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${updatedTodo.id}`, updatedTodo)

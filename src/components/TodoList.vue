@@ -70,7 +70,7 @@ export default {
   display: block;
   width: 60%;
   height: 400px;
-  margin: 10px auto;
+  margin: 50px auto;
   padding: 0 40px 5px;
   background: #fafafa;
   border-radius: 10px;

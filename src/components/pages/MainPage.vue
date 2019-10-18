@@ -1,7 +1,7 @@
 <template>
   <div class="main-page-container">
-    <the-header/>
     <div class="main-content-wrapper">
+      <the-header/>
       <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode" @done:todo="updateTodo"/>
       <todo-editor :to-edit="toEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
     </div>
@@ -78,15 +78,6 @@ export default {
   color: black;
 }
 
-.main-content-wrapper {
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
 #smiley-animation {
   background-image: url("../../assets/smiley_v1.png");
   background-repeat: no-repeat;
@@ -94,8 +85,8 @@ export default {
   width: 100px;
   height: 100px;
   position: absolute;
-  left: 80px;
-  bottom: 25px;
+  right: 80px;
+  bottom: 50px;
   border-radius: 50%;
   animation: float 3s ease infinite;
 }

@@ -106,7 +106,7 @@ export default {
 .todo-editor-container {
   display: block;
   width: 60%;
-  margin: 30px auto;
+  margin: 0 auto;
   padding: 20px 40px;
   background: #fafafa;
   border-radius: 10px;

@@ -31,7 +31,7 @@ body {
   min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
-  overflow-x: hidden;
+  overflow: hidden;
   background: white;
   font-family: 'Montserrat', Helvetica, sans-serif;
   line-height: 1.4;

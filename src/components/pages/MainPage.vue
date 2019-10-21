@@ -30,17 +30,12 @@ export default {
   },
   methods: {
     async addTodo(newTodo) {
-      if (newTodo.title !== '') {
-
-        if (newTodo.dueAt === '')
-          newTodo.dueAt = "Someday";
-
-        const data = await ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo);
-        this.todos = [...this.todos, data];
-
-        const todoList = document.getElementById("todo-list");
-        todoList.scrollTop = todoList.scrollHeight;
-      }
+      if (newTodo.dueAt === '')
+        newTodo.dueAt = "Someday";
+      const data = await ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo);
+      this.todos = [...this.todos, data];
+      const todoList = document.getElementById("todo-list");
+      todoList.scrollTop = todoList.scrollHeight + 100;
     },
     async deleteTodo(id) {
       await ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`);

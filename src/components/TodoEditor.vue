@@ -1,7 +1,7 @@
 <template>
   <div class="todo-editor-container">
     <form class="form-wrapper" v-if="toEdit === null" @submit.prevent="submitTodo">
-      <h3>Add a New ToDo</h3>
+      <h3>Add a New Todo</h3>
       <div class="input-wrapper" :class="{'hasErr': submitError && emptyTitleAdd}">
         <input v-model="todoItem.title" type="text" placeholder="What to do?">
         <div class="datePicker">
@@ -31,7 +31,7 @@
       </div>
     </form>
     <form class="form-wrapper" v-else @submit.prevent="updateTodo">
-      <h3>edit this todo</h3>
+      <h3>Edit This Todo</h3>
       <div class="input-wrapper" :class="{'hasErr': editError && emptyTitleEdit}">
         <input v-model="toEdit.title" type="text" placeholder="edit the todo here">
         <div class="datePicker">
@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="button-wrapper">
-        <button class="submit" type="submit">done</button>
+        <button class="submit" type="submit">save</button>
         <button class="cancel" type="reset" @click.prevent="cancelEdit">cancel</button>
       </div>
     </form>

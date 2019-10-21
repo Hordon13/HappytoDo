@@ -2,7 +2,7 @@
   <div class="todo-editor-container">
     <form class="form-wrapper" v-if="toEdit === null" @submit.prevent="submitTodo">
       <h3>Add a New ToDo</h3>
-      <div class="input-wrapper">
+      <div class="input-wrapper" :class="{'hasErr': submitError && emptyTitleAdd}">
         <input v-model="todoItem.title" type="text" placeholder="What to do?">
         <div class="datePicker">
           <date-time-picker
@@ -32,7 +32,7 @@
     </form>
     <form class="form-wrapper" v-else @submit.prevent="updateTodo">
       <h3>edit this todo</h3>
-      <div class="input-wrapper">
+      <div class="input-wrapper" :class="{'hasErr': editError && emptyTitleEdit}">
         <input v-model="toEdit.title" type="text" placeholder="edit the todo here">
         <div class="datePicker">
           <date-time-picker
@@ -76,7 +76,9 @@ export default {
         title: '',
         dueAt: ''
       },
-      today: new Date().toISOString().substring(0, 10)
+      today: new Date().toISOString().substring(0, 10),
+      submitError: false,
+      editError: false
     }
   },
   props: {
@@ -84,19 +86,37 @@ export default {
   },
   methods: {
     submitTodo() {
-      const createdAt = new Date();
-      const isCompleted = false;
-      const newTodo = {...this.todoItem, createdAt, isCompleted};
+      if (this.todoItem.title !== '') {
+        this.submitError = false;
+        const createdAt = new Date();
+        const isCompleted = false;
+        const newTodo = {...this.todoItem, createdAt, isCompleted};
 
-      this.$emit('add:todo', newTodo);
-      this.todoItem.title = '';
-      this.todoItem.dueAt = '';
+        this.$emit('add:todo', newTodo);
+        this.todoItem.title = '';
+        this.todoItem.dueAt = '';
+      } else {
+        this.submitError = true;
+      }
     },
     updateTodo() {
-      this.$emit('update:todo', this.toEdit)
+      if (this.toEdit.title !== '') {
+        this.editError = false;
+        this.$emit('update:todo', this.toEdit)
+      } else {
+        this.editError = true;
+      }
     },
     cancelEdit() {
       this.$emit('cancel:edit', this.toEdit)
+    }
+  },
+  computed: {
+    emptyTitleAdd() {
+      return this.todoItem.title === '';
+    },
+    emptyTitleEdit() {
+      return this.toEdit.title === '';
     }
   }
 }
@@ -152,6 +172,10 @@ h3 {
 .input-wrapper input[type="text"] {
   width: 75%;
   font-size: 20px;
+}
+
+.hasErr input {
+  border: #eb2d53 solid 2px;
 }
 
 .datePicker {

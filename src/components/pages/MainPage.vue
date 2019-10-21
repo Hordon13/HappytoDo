@@ -29,43 +29,45 @@ export default {
     }
   },
   methods: {
-    addTodo(newTodo) {
+    async addTodo(newTodo) {
       if (newTodo.title !== '') {
+
         if (newTodo.dueAt === '')
           newTodo.dueAt = "Someday";
+
+        const data = await ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo);
+        this.todos = [...this.todos, data];
+
         const todoList = document.getElementById("todo-list");
-        ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo)
-          .then(data => this.todos = [...this.todos, data])
-          .then(() => todoList.scrollTop = todoList.scrollHeight);
+        todoList.scrollTop = todoList.scrollHeight;
       }
     },
-    deleteTodo(id) {
-      ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`)
-        .then(() => this.todos = this.todos.filter(todo => todo.id !== id))
+    async deleteTodo(id) {
+      await ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`);
+      this.todos = this.todos.filter(todo => todo.id !== id);
     },
-    editMode(todo) {
+    async editMode(todo) {
       if (this.toEdit !== null) {
-        ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${this.toEdit.id}`, this.toEdit)
-          .then(() => this.toEdit = todo)
-          .then(() => this.cachedTodo = Object.assign({}, todo))
+        await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${this.toEdit.id}`, this.toEdit);
+        this.toEdit = todo;
+        this.cachedTodo = Object.assign({}, todo);
       } else {
         this.toEdit = todo;
         this.cachedTodo = Object.assign({}, todo);
       }
     },
-    updateTodo(updatedTodo) {
-      ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${updatedTodo.id}`, updatedTodo)
-        .then(() => this.todos = this.todos.map(todo => todo.id === this.toEdit.id ? updatedTodo : todo))
-        .then(this.toEdit = null)
+    async updateTodo(updatedTodo) {
+      await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${updatedTodo.id}`, updatedTodo);
+      this.todos = this.todos.map(todo => todo.id === this.toEdit.id ? updatedTodo : todo);
+      this.toEdit = null;
     },
     cancelEdit(canceledTodo) {
       Object.assign(canceledTodo, this.cachedTodo);
       this.toEdit = null;
     },
   },
-  created() {
-    ApiService.get("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos")
-      .then(data => this.todos = data);
+  async created() {
+    this.todos = await ApiService.get("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos");
   }
 }
 </script>

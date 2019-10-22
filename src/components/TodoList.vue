@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-table" id="todo-list">
+    <div class="todo-table" ref="todoTable">
       <table>
         <colgroup>
           <col id="col1">
@@ -58,6 +58,10 @@ export default {
     },
     isDueToday(date) {
       return new Date(date) <= new Date();
+    },
+    scrollToBottom() {
+      const table = this.$refs.todoTable;
+      table.scrollTop = table.scrollHeight;
     }
   },
   filters: {

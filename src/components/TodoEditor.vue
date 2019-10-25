@@ -1,6 +1,6 @@
 <template>
   <div class="todo-editor-container">
-    <form class="form-wrapper" v-if="isEditing === false" @submit.prevent="submitTodo">
+    <form class="form-wrapper" v-if="!isEditing" @submit.prevent="submitTodo">
       <h3>Add a New Todo</h3>
       <div class="input-wrapper" :class="{'hasErr': submitError && emptyTitleAdd}">
         <input v-model="todoItem.title" type="text" placeholder="What to do?">
@@ -30,17 +30,17 @@
         <button class="cancel" type="reset">reset</button>
       </div>
     </form>
+
     <form class="form-wrapper" v-else @submit.prevent="updateTodo">
       <h3>Edit This Todo</h3>
       <div class="input-wrapper" :class="{'hasErr': editError && emptyTitleEdit}">
-        <input v-model="underEdit.title" type="text" placeholder="edit the todo here">
+        <input v-model="getTodoUnderEdit.title" type="text" placeholder="Edit the todo here...">
         <div class="datePicker">
           <date-time-picker
-                  v-model="underEdit.dueAt"
+                  v-model="getTodoUnderEdit.dueAt"
                   format="YYYY. MM. DD."
                   formatted="l"
                   color="#50c1f2"
-                  :min-date="today"
                   only-date
                   auto-close
                   no-button
@@ -50,14 +50,14 @@
           >
             <button type="button">
               <i class="far fa-calendar-check"></i>
-              {{ underEdit.dueAt === 'Someday' ? "Someday" : underEdit.dueAt}}
+              {{ getTodoUnderEdit.dueAt === 'Someday' ? "Someday" : getTodoUnderEdit.dueAt}}
             </button>
           </date-time-picker>
         </div>
       </div>
       <div class="button-wrapper">
         <button class="submit" type="submit">save</button>
-        <button class="cancel" type="reset" @click.prevent="cancel">cancel</button>
+        <button class="cancel" type="reset" @click.prevent="cancelEdit">cancel</button>
       </div>
     </form>
   </div>
@@ -66,7 +66,7 @@
 <script>
 import DateTimePicker from 'vue-ctk-date-time-picker';
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
-import {mapActions, mapGetters} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: "TodoEditor",
@@ -83,18 +83,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addTodo', 'update', 'cancel']),
+    ...mapActions(['postTodo', 'putTodo', 'cancelEdit']),
     submitTodo() {
       if (this.todoItem.title !== '') {
-        this.submitError = false;
         const createdAt = new Date();
         const isCompleted = false;
         if (this.todoItem.dueAt === '')
           this.todoItem.dueAt = "Someday";
         const newTodo = {...this.todoItem, createdAt, isCompleted};
 
-        this.addTodo(newTodo);
+        this.postTodo(newTodo);
 
+        this.submitError = false;
         this.todoItem.title = '';
         this.todoItem.dueAt = '';
       } else {
@@ -102,22 +102,18 @@ export default {
       }
     },
     updateTodo() {
-      if (this.underEdit.title !== '') {
+      if (this.getTodoUnderEdit.title !== '') {
+        this.putTodo(this.getTodoUnderEdit);
         this.editError = false;
-        this.update(this.underEdit);
       } else {
         this.editError = true;
       }
     }
   },
   computed: {
-    ...mapGetters(['isEditing', 'underEdit', 'original']),
-    emptyTitleAdd() {
-      return this.todoItem.title === '';
-    },
-    emptyTitleEdit() {
-      return this.todoUnderEdit.title === '';
-    }
+    ...mapGetters(['isEditing', 'getTodoUnderEdit']),
+    emptyTitleAdd: () => this.todoItem.title === '',
+    emptyTitleEdit: () => this.getTodoUnderEdit.title === ''
   }
 }
 </script>

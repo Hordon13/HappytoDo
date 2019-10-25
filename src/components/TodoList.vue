@@ -19,13 +19,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="todo in allTodos" :key="todo.id" :class="{done: todo.isCompleted}">
+        <tr v-for="todo in getTodoList" :key="todo.id" :class="{done: todo.isCompleted}">
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
           <td id="title"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>
           <td :class="{'dueToday': isDueToday(todo.dueAt) && !todo.isCompleted}"> {{ todo.dueAt }}</td>
           <td>
-            <button id="editBtn" title="edit this todo" @click="editTodo(todo)">
+            <button id="editBtn" title="edit this todo" @click="beginEdit(todo)">
               <i class="fas fa-pen"></i>
             </button>
             <button id="delBtn" title="delete this todo" @click="deleteTodo(todo.id)">
@@ -44,30 +44,20 @@ import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: "TodoList",
-  props: {
-    todos: Array,
-  },
   methods: {
-    ...mapActions(["fetchData", "deleteTodo", "update", "editMode"]),
+    ...mapActions(["fetchTodoList", "deleteTodo", "putTodo", "beginEdit"]),
     markComplete(todo) {
       todo.isCompleted = !todo.isCompleted;
-      this.update(todo);
+      this.putTodo(todo);
     },
-    editTodo(todo) {
-      this.editMode(todo);
-    },
-    isDueToday(date) {
-      return new Date(date) <= new Date();
-    }
+    isDueToday: (date) => new Date(date) <= new Date()
   },
   filters: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString("hu-HU");
-    }
+    formatDate: (date) => new Date(date).toLocaleDateString("hu-HU")
   },
-  computed: mapGetters(['allTodos']),
+  computed: mapGetters(['getTodoList']),
   async created() {
-    this.fetchData();
+    this.fetchTodoList();
   }
 }
 </script>

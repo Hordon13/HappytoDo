@@ -1,10 +1,8 @@
 <template>
   <div class="main-page-container">
-    <div class="main-content-wrapper">
-      <the-header/>
-      <todo-list :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode" @done:todo="updateTodo"/>
-      <todo-editor :to-edit="todoUnderEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
-    </div>
+    <the-header/>
+    <todo-list/>
+    <todo-editor/>
     <div id="smiley-animation"></div>
   </div>
 </template>
@@ -29,6 +27,7 @@ export default {
   min-height: 100vh;
   background-color: #63c8f1;
   background-image: url("../../assets/bg.png");
+  background-size: cover;
   color: black;
 }
 

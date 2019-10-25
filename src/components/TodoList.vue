@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="todo in getTodoList" :key="todo.id" :class="{done: todo.isCompleted}">
+        <tr v-for="todo in getTodoList" :key="todo.id" :class="{done: todo.isCompleted}" @dblclick="markComplete(todo)">
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
           <td id="title"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>

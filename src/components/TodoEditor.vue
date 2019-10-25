@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     ...mapActions(['postTodo', 'putTodo', 'cancelEdit']),
-    submitTodo() {
+    async submitTodo() {
       if (this.todoItem.title !== '') {
         const createdAt = new Date();
         const isCompleted = false;
@@ -92,7 +92,8 @@ export default {
           this.todoItem.dueAt = "Someday";
         const newTodo = {...this.todoItem, createdAt, isCompleted};
 
-        this.postTodo(newTodo);
+        await this.postTodo(newTodo);
+        this.$emit("scroll:todoList");
 
         this.submitError = false;
         this.todoItem.title = '';
@@ -101,9 +102,9 @@ export default {
         this.submitError = true;
       }
     },
-    updateTodo() {
+    async updateTodo() {
       if (this.getTodoUnderEdit.title !== '') {
-        this.putTodo(this.getTodoUnderEdit);
+        await this.putTodo(this.getTodoUnderEdit);
         this.editError = false;
       } else {
         this.editError = true;

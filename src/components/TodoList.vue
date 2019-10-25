@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-table">
+    <div class="todo-table" ref="todoList">
       <table>
         <colgroup>
           <col id="col1">
@@ -50,14 +50,18 @@ export default {
       todo.isCompleted = !todo.isCompleted;
       this.putTodo(todo);
     },
-    isDueToday: (date) => new Date(date) <= new Date()
+    isDueToday: (date) => new Date(date) <= new Date(),
+    scrollToBottom() {
+      const todoList = this.$refs.todoList;
+      todoList.scrollTop = todoList.scrollHeight;
+    }
   },
   filters: {
     formatDate: (date) => new Date(date).toLocaleDateString("hu-HU")
   },
   computed: mapGetters(['getTodoList']),
   async created() {
-    this.fetchTodoList();
+    await this.fetchTodoList();
   }
 }
 </script>

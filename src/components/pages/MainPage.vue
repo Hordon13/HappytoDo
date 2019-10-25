@@ -1,8 +1,8 @@
 <template>
   <div class="main-page-container">
     <the-header/>
-    <todo-list/>
-    <todo-editor/>
+    <todo-list ref="todoList"/>
+    <todo-editor @scroll:todoList="scrollToBottom()"/>
     <div id="smiley-animation"></div>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
     TheHeader,
     TodoList,
     TodoEditor
+  },
+  methods: {
+    scrollToBottom() {
+      this.$refs.todoList.scrollToBottom();
+    }
   }
 }
 </script>

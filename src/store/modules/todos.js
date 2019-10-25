@@ -43,7 +43,9 @@ const actions = {
 
 const mutations = {
   setTodoList: (state, todos) => (state.todoList = todos),
-  addTodo: (state, newTodo) => state.todoList.push(newTodo),
+  addTodo: (state, newTodo) => {
+    state.todoList.push(newTodo);
+  },
   removeTodo: (state, id) => (state.todoList = state.todoList.filter(todo => todo.id !== id)),
   updateTodo: (state, updatedTodo) => {
     state.todoList.map(todo => todo.id === state.todoUnderEdit.id ? updatedTodo : todo);

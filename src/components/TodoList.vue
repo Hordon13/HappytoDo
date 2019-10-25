@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-table" ref="todoTable">
+    <div class="todo-table">
       <table>
         <colgroup>
           <col id="col1">
@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="todo in todos" :key="todo.id" :class="{done: todo.isCompleted}">
+        <tr v-for="todo in allTodos" :key="todo.id" :class="{done: todo.isCompleted}">
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
           <td id="title"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>
@@ -40,34 +40,34 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
+
 export default {
   name: "TodoList",
   props: {
     todos: Array,
   },
   methods: {
+    ...mapActions(["fetchData", "deleteTodo", "update", "editMode"]),
     markComplete(todo) {
       todo.isCompleted = !todo.isCompleted;
-      this.$emit('done:todo', todo);
-    },
-    deleteTodo(id) {
-      this.$emit('delete:todo', id);
+      this.update(todo);
     },
     editTodo(todo) {
-      this.$emit('edit:todo', todo);
+      this.editMode(todo);
     },
     isDueToday(date) {
       return new Date(date) <= new Date();
-    },
-    scrollToBottom() {
-      const table = this.$refs.todoTable;
-      table.scrollTop = table.scrollHeight;
     }
   },
   filters: {
     formatDate(date) {
       return new Date(date).toLocaleDateString("hu-HU");
     }
+  },
+  computed: mapGetters(['allTodos']),
+  async created() {
+    this.fetchData();
   }
 }
 </script>

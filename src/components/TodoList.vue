@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-table" ref="todoTable">
+    <div class="todo-table" ref="todoList">
       <table>
         <colgroup>
           <col id="col1">
@@ -19,13 +19,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="todo in todos" :key="todo.id" :class="{done: todo.isCompleted}">
+        <tr v-for="todo in getTodoList" :key="todo.id" :class="{done: todo.isCompleted}" @dblclick="markComplete(todo)">
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
           <td id="title"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>
           <td :class="{'dueToday': isDueToday(todo.dueAt) && !todo.isCompleted}"> {{ todo.dueAt }}</td>
           <td>
-            <button id="editBtn" title="edit this todo" @click="editTodo(todo)">
+            <button id="editBtn" title="edit this todo" @click="beginEdit(todo)">
               <i class="fas fa-pen"></i>
             </button>
             <button id="delBtn" title="delete this todo" @click="deleteTodo(todo.id)">
@@ -40,34 +40,28 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
+
 export default {
   name: "TodoList",
-  props: {
-    todos: Array,
-  },
   methods: {
+    ...mapActions(["fetchTodoList", "deleteTodo", "putTodo", "beginEdit"]),
     markComplete(todo) {
       todo.isCompleted = !todo.isCompleted;
-      this.$emit('done:todo', todo);
+      this.putTodo(todo);
     },
-    deleteTodo(id) {
-      this.$emit('delete:todo', id);
-    },
-    editTodo(todo) {
-      this.$emit('edit:todo', todo);
-    },
-    isDueToday(date) {
-      return new Date(date) <= new Date();
-    },
+    isDueToday: (date) => new Date(date) <= new Date(),
     scrollToBottom() {
-      const table = this.$refs.todoTable;
-      table.scrollTop = table.scrollHeight;
+      const todoList = this.$refs.todoList;
+      todoList.scrollTop = todoList.scrollHeight;
     }
   },
   filters: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString("hu-HU");
-    }
+    formatDate: (date) => new Date(date).toLocaleDateString("hu-HU")
+  },
+  computed: mapGetters(['getTodoList']),
+  async created() {
+    await this.fetchTodoList();
   }
 }
 </script>

@@ -1,10 +1,8 @@
 <template>
   <div class="main-page-container">
-    <div class="main-content-wrapper">
-      <the-header/>
-      <todo-list ref="todoList" :todos="todos" @delete:todo="deleteTodo" @edit:todo="editMode" @done:todo="updateTodo"/>
-      <todo-editor :to-edit="todoUnderEdit" @add:todo="addTodo" @update:todo="updateTodo" @cancel:edit="cancelEdit"/>
-    </div>
+    <the-header/>
+    <todo-list ref="todoList"/>
+    <todo-editor @scroll:todoList="scrollToBottom()"/>
     <div id="smiley-animation"></div>
   </div>
 </template>
@@ -13,7 +11,6 @@
 import TheHeader from "@/components/TheHeader";
 import TodoList from "@/components/TodoList";
 import TodoEditor from "@/components/TodoEditor";
-import ApiService from "@/services/api.service";
 
 export default {
   name: "MainPage",
@@ -21,47 +18,11 @@ export default {
     TheHeader,
     TodoList,
     TodoEditor
-  }, data() {
-    return {
-      todos: [],
-      todoUnderEdit: null,
-      originalTodo: null
-    }
   },
   methods: {
-    async addTodo(newTodo) {
-      if (newTodo.dueAt === '')
-        newTodo.dueAt = "Someday";
-      const data = await ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo);
-      this.todos = [...this.todos, data];
+    scrollToBottom() {
       this.$refs.todoList.scrollToBottom();
-    },
-    async deleteTodo(id) {
-      await ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`);
-      this.todos = this.todos.filter(todo => todo.id !== id);
-    },
-    async editMode(todo) {
-      if (this.todoUnderEdit !== null) {
-        await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${this.todoUnderEdit.id}`, this.todoUnderEdit);
-        this.todoUnderEdit = todo;
-        this.originalTodo = Object.assign({}, todo);
-      } else {
-        this.todoUnderEdit = todo;
-        this.originalTodo = Object.assign({}, todo);
-      }
-    },
-    async updateTodo(updatedTodo) {
-      await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${updatedTodo.id}`, updatedTodo);
-      this.todos = this.todos.map(todo => todo.id === this.todoUnderEdit.id ? updatedTodo : todo);
-      this.todoUnderEdit = null;
-    },
-    cancelEdit(canceledTodo) {
-      Object.assign(canceledTodo, this.originalTodo);
-      this.todoUnderEdit = null;
-    },
-  },
-  async created() {
-    this.todos = await ApiService.get("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos");
+    }
   }
 }
 </script>
@@ -71,6 +32,7 @@ export default {
   min-height: 100vh;
   background-color: #63c8f1;
   background-image: url("../../assets/bg.png");
+  background-size: cover;
   color: black;
 }
 

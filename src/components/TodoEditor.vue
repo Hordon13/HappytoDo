@@ -1,6 +1,6 @@
 <template>
   <div class="todo-editor-container">
-    <form class="form-wrapper" v-if="toEdit === null" @submit.prevent="submitTodo">
+    <form class="form-wrapper" v-if="!isEditing" @submit.prevent="submitTodo">
       <h3>Add a New Todo</h3>
       <div class="input-wrapper" :class="{'hasErr': submitError && emptyTitleAdd}">
         <input v-model="todoItem.title" type="text" placeholder="What to do?">
@@ -30,17 +30,17 @@
         <button class="cancel" type="reset">reset</button>
       </div>
     </form>
+
     <form class="form-wrapper" v-else @submit.prevent="updateTodo">
       <h3>Edit This Todo</h3>
       <div class="input-wrapper" :class="{'hasErr': editError && emptyTitleEdit}">
-        <input v-model="toEdit.title" type="text" placeholder="edit the todo here">
+        <input v-model="getTodoUnderEdit.title" type="text" placeholder="Edit the todo here...">
         <div class="datePicker">
           <date-time-picker
-                  v-model="toEdit.dueAt"
+                  v-model="getTodoUnderEdit.dueAt"
                   format="YYYY. MM. DD."
                   formatted="l"
                   color="#50c1f2"
-                  :min-date="today"
                   only-date
                   auto-close
                   no-button
@@ -50,7 +50,7 @@
           >
             <button type="button">
               <i class="far fa-calendar-check"></i>
-              {{ toEdit.dueAt === 'Someday' ? "Someday" : toEdit.dueAt}}
+              {{ getTodoUnderEdit.dueAt === 'Someday' ? "Someday" : getTodoUnderEdit.dueAt}}
             </button>
           </date-time-picker>
         </div>
@@ -66,6 +66,7 @@
 <script>
 import DateTimePicker from 'vue-ctk-date-time-picker';
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: "TodoEditor",
@@ -81,43 +82,39 @@ export default {
       editError: false
     }
   },
-  props: {
-    toEdit: Object
-  },
   methods: {
-    submitTodo() {
+    ...mapActions(['postTodo', 'putTodo', 'cancelEdit']),
+    async submitTodo() {
       if (this.todoItem.title !== '') {
-        this.submitError = false;
         const createdAt = new Date();
         const isCompleted = false;
+        if (this.todoItem.dueAt === '')
+          this.todoItem.dueAt = "Someday";
         const newTodo = {...this.todoItem, createdAt, isCompleted};
 
-        this.$emit('add:todo', newTodo);
+        await this.postTodo(newTodo);
+        this.$emit("scroll:todoList");
+
+        this.submitError = false;
         this.todoItem.title = '';
         this.todoItem.dueAt = '';
       } else {
         this.submitError = true;
       }
     },
-    updateTodo() {
-      if (this.toEdit.title !== '') {
+    async updateTodo() {
+      if (this.getTodoUnderEdit.title !== '') {
+        await this.putTodo(this.getTodoUnderEdit);
         this.editError = false;
-        this.$emit('update:todo', this.toEdit)
       } else {
         this.editError = true;
       }
-    },
-    cancelEdit() {
-      this.$emit('cancel:edit', this.toEdit)
     }
   },
   computed: {
-    emptyTitleAdd() {
-      return this.todoItem.title === '';
-    },
-    emptyTitleEdit() {
-      return this.toEdit.title === '';
-    }
+    ...mapGetters(['isEditing', 'getTodoUnderEdit']),
+    emptyTitleAdd: () => this.todoItem.title === '',
+    emptyTitleEdit: () => this.getTodoUnderEdit.title === ''
   }
 }
 </script>

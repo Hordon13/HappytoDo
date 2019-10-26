@@ -2,6 +2,7 @@
   <div class="the-header-container">
     <header>
       <img src="../assets/happytodo.png" alt="happy to do logo">
+      <button>login</button>
     </header>
   </div>
 </template>
@@ -16,6 +17,36 @@ export default {
 header {
   width: 100%;
   background: #011d2d;
-  padding: 15px 0 10px 50px;
+  padding: 20px 100px;
+  display: flex;
+  justify-content: space-between;
 }
+
+button {
+  color: white;
+  background: #63c8f1;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  user-select: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #50c1f2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+
 </style>

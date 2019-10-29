@@ -2,14 +2,18 @@
   <div class="the-header-container">
     <header>
       <img src="../assets/happytodo.png" alt="happy to do logo">
-      <button>login</button>
+      <router-link :to="routerLink" tag="button">{{routerText}}</router-link>
     </header>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TheHeader"
+  name: "TheHeader",
+  props: {
+    routerText: String,
+    routerLink: String
+  }
 }
 </script>
 

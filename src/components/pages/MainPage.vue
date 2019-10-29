@@ -1,6 +1,6 @@
 <template>
   <div class="main-page-container">
-    <the-header/>
+    <the-header router-text="login" router-link="login"/>
     <todo-list ref="todoList"/>
     <todo-editor @scroll:todoList="scrollToBottom()"/>
     <div id="smiley-animation"></div>

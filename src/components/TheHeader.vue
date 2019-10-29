@@ -1,7 +1,9 @@
 <template>
   <div class="the-header-container">
     <header>
-      <img src="../assets/happytodo.png" alt="happy to do logo">
+      <router-link to="/" tag="div">
+        <img src="../assets/happytodo.png" alt="happy to do logo">
+      </router-link>
       <router-link :to="routerLink" tag="button">{{routerText}}</router-link>
     </header>
   </div>
@@ -33,7 +35,7 @@ button {
   border: none;
   border-radius: 5px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 900;
   text-transform: uppercase;
   user-select: none;
   cursor: pointer;
@@ -52,5 +54,8 @@ button:focus {
   outline: none;
 }
 
+img {
+  cursor: pointer;
+}
 
 </style>

@@ -103,7 +103,7 @@ export default {
         await this.postTodo(welcome);
         welcome.title = 'You can add more with the form below 👇';
         await this.postTodo(welcome);
-        welcome.title = 'Be always Happy to Do! 🥳🤩';
+        welcome.title = 'Be Happy to Do! 🥳🤩';
         await this.postTodo(welcome);
 
         this.newUser.username = '';

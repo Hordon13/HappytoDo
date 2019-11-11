@@ -2,8 +2,8 @@ import ApiService from "@/services/api.service";
 
 const state = {
   userList: [],
-  loggedUser: null,
-  isLoggedIn: false,
+  loggedUser: JSON.parse(localStorage.getItem('user')),
+  isLoggedIn: !!localStorage.getItem("user"),
   regError: false,
   logError: false
 };
@@ -51,14 +51,16 @@ const mutations = {
       if (state.userList[i].email === user.email && state.userList[i].password === user.password) {
         state.loggedUser = Object.assign({}, state.userList[i]);
         state.isLoggedIn = true;
+        localStorage.setItem("user", JSON.stringify(state.userList[i]));
       }
     }
-    if (state.isLoggedIn === false) {
+    if (!state.isLoggedIn) {
       state.logError = true;
     }
   },
   logoutUser: (state) => {
     state.loggedUser = null;
+    localStorage.removeItem("user");
     state.isLoggedIn = false;
     state.regError = false;
     state.logError = false;

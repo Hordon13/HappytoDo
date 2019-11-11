@@ -4,18 +4,26 @@
       <router-link to="/" tag="div">
         <img src="../assets/happytodo.png" alt="happy to do logo">
       </router-link>
-      <router-link :to="routerLink" tag="button">{{routerText}}</router-link>
+      <div class="login-wrapper">
+        <h1 v-if="getIsLoggedIn">Hi, {{getUser.username}}!</h1>
+        <button v-if="getIsLoggedIn" @click="exitUser">log out</button>
+        <router-link v-else :to="routerLink" tag="button">{{routerText}}</router-link>
+      </div>
     </header>
   </div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
+
 export default {
   name: "TheHeader",
   props: {
     routerText: String,
     routerLink: String
-  }
+  },
+  methods: mapActions(['exitUser']),
+  computed: mapGetters(['getIsLoggedIn', 'getUser'])
 }
 </script>
 
@@ -28,7 +36,18 @@ header {
   justify-content: space-between;
 }
 
+.login-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+h1 {
+  color: white;
+}
+
 button {
+  height: 100%;
   color: white;
   background: #63c8f1;
   padding: 10px 30px;
@@ -39,6 +58,7 @@ button {
   text-transform: uppercase;
   user-select: none;
   cursor: pointer;
+  margin-left: 40px;
 }
 
 button:hover {

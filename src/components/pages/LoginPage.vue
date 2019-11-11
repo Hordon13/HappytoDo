@@ -1,34 +1,35 @@
 <template>
   <div class="login-page-container">
     <the-header router-text="back" router-link="/"/>
-
     <div class="main-login-wrapper" :class="{'right-panel-active' : isSignUp}">
       <div class="form-container sign-up-container">
-        <form action="#">
+        <form @submit.prevent="register">
           <div class="text-wrapper">
             <h3>Create Account</h3>
             <span>you won't forget anything ever again</span>
           </div>
           <div class="input-wrapper">
-            <input type="text" placeholder="Name"/>
-            <input type="email" placeholder="Email"/>
-            <input type="password" placeholder="Password"/>
+            <input v-model="newUser.username" type="text" placeholder="Nickname" maxlength="12" required/>
+            <input v-model="newUser.email" type="email" placeholder="Email" required/>
+            <input v-model="newUser.password" type="password" placeholder="Password" minlength="8" required/>
           </div>
-          <button>Sign Up</button>
+          <span v-if="getRegError" class="form-error">This email is already in use</span>
+          <button type="submit">Sign Up</button>
         </form>
       </div>
 
       <div class="form-container sign-in-container">
-        <form action="#">
+        <form @submit.prevent="login">
           <div class="text-wrapper">
             <h3>Sign in</h3>
             <span>your todos are waiting for you</span>
           </div>
           <div class="input-wrapper">
-            <input type="email" placeholder="Email"/>
-            <input type="password" placeholder="Password"/>
+            <input v-model="existingUser.email" type="email" placeholder="Email" required/>
+            <input v-model="existingUser.password" type="password" placeholder="Password" required/>
           </div>
-          <button>Sign In</button>
+          <span v-if="getLogError" class="form-error">Incorrect email or password</span>
+          <button type="submit">Sign In</button>
         </form>
       </div>
 
@@ -47,11 +48,13 @@
         </div>
       </div>
     </div>
+    <span class="warning">❗️This is an unsecured form. Do NOT use real information!</span>
   </div>
 </template>
 
 <script>
 import TheHeader from "@/components/TheHeader";
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: "LoginPage",
@@ -60,8 +63,43 @@ export default {
   },
   data() {
     return {
-      isSignUp: false
+      isSignUp: false,
+      newUser: {
+        username: '',
+        email: '',
+        password: ''
+      },
+      existingUser: {
+        email: '',
+        password: ''
+      }
     }
+  },
+  methods: {
+    ...mapActions(['fetchUsers', 'postUser', 'authUser']),
+    login() {
+      this.authUser(this.existingUser);
+      if (!this.getLogError) {
+        this.existingUser.email = '';
+        this.existingUser.password = '';
+      }
+    },
+    async register() {
+      await this.postUser(this.newUser);
+      if (!this.getRegError) {
+        this.existingUser.email = this.newUser.email;
+        this.existingUser.password = this.newUser.password;
+        this.login();
+
+        this.newUser.username = '';
+        this.newUser.email = '';
+        this.newUser.password = '';
+      }
+    }
+  },
+  computed: mapGetters(['getRegError', 'getLogError']),
+  async created() {
+    await this.fetchUsers();
   }
 }
 </script>
@@ -162,6 +200,12 @@ input:focus {
   top: 0;
   height: 100%;
   transition: all 0.6s ease-in-out;
+}
+
+.form-error {
+  color: #eb2d53;
+  font-weight: bold;
+  margin-top: 5px;
 }
 
 .sign-in-container {
@@ -269,6 +313,13 @@ input:focus {
 
 .main-login-wrapper.right-panel-active .overlay-right {
   transform: translateX(20%);
+}
+
+.warning {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 </style>

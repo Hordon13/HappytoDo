@@ -12,6 +12,7 @@
 import TheHeader from "@/components/TheHeader";
 import TodoList from "@/components/TodoList";
 import TodoEditor from "@/components/TodoEditor";
+import {mapGetters} from 'vuex';
 
 export default {
   name: "MainPage",
@@ -23,8 +24,9 @@ export default {
   methods: {
     scrollToBottom() {
       this.$refs.todoList.scrollToBottom();
-    }
-  }
+    },
+  },
+  computed: mapGetters(['getIsLoggedIn']),
 }
 </script>
 

@@ -1,9 +1,10 @@
 <template>
   <div class="main-page-container">
-    <the-header/>
+    <the-header router-text="login" router-link="login"/>
     <todo-list ref="todoList"/>
     <todo-editor @scroll:todoList="scrollToBottom()"/>
-    <div id="smiley-animation"></div>
+    <div id="smiley-animation" onclick="window.open('https://github.com/Hordon13/HappytoDo');">
+    </div>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import TheHeader from "@/components/TheHeader";
 import TodoList from "@/components/TodoList";
 import TodoEditor from "@/components/TodoEditor";
+import {mapGetters} from 'vuex';
 
 export default {
   name: "MainPage",
@@ -22,16 +24,16 @@ export default {
   methods: {
     scrollToBottom() {
       this.$refs.todoList.scrollToBottom();
-    }
-  }
+    },
+  },
+  computed: mapGetters(['getIsLoggedIn']),
 }
 </script>
 
 <style scoped>
 .main-page-container {
   min-height: 100vh;
-  background-color: #63c8f1;
-  background-image: url("../../assets/bg.png");
+  background-color: #ebebeb;
   background-size: cover;
   color: black;
 }
@@ -47,6 +49,7 @@ export default {
   bottom: 50px;
   border-radius: 50%;
   animation: float 3s ease infinite;
+  cursor: pointer;
 }
 
 #smiley-animation:hover {

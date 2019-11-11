@@ -113,8 +113,12 @@ export default {
   },
   computed: {
     ...mapGetters(['isEditing', 'getTodoUnderEdit']),
-    emptyTitleAdd: () => this.todoItem.title === '',
-    emptyTitleEdit: () => this.getTodoUnderEdit.title === ''
+    emptyTitleAdd() {
+      return this.todoItem.title === '';
+    },
+    emptyTitleEdit() {
+      return this.getTodoUnderEdit.title === '';
+    }
   }
 }
 </script>
@@ -127,7 +131,7 @@ export default {
   padding: 20px 40px;
   background: #fafafa;
   border-radius: 10px;
-  box-shadow: 4px 5px 15px -4px rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 5px 15px -4px rgba(0, 0, 0, 0.5);
 }
 
 .form-wrapper {
@@ -172,7 +176,12 @@ h3 {
 }
 
 .hasErr input {
-  border: #eb2d53 solid 2px;
+  box-shadow: 0 1px 3px rgba(235, 45, 83, 0.12), 0 1px 2px rgba(235, 45, 83, 0.24);
+  border: crimson double 2px;
+}
+
+.hasErr input:hover {
+  box-shadow: 0 14px 28px rgba(235, 45, 83, 0.25), 0 10px 10px rgba(235, 45, 83, 0.22);
 }
 
 .datePicker {
@@ -189,6 +198,7 @@ h3 {
   border: 1px whitesmoke solid;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  cursor: pointer;
 }
 
 .datePicker button:hover {
@@ -222,13 +232,9 @@ h3 {
   text-transform: uppercase;
   margin: 0 10px;
   padding: 8px 25px;
-  border-radius: 20px;
+  border-radius: 5px;
   user-select: none;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15), inset 0 -15px 10px -12px rgba(0, 0, 0, 0.20);
-}
-
-.button-wrapper button:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 5px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .button-wrapper button:focus {
@@ -240,10 +246,20 @@ h3 {
 }
 
 .submit {
+  border: #63c8f1 1px solid;
   background: #63c8f1;
 }
 
+.submit:hover {
+  background: #50c1f2;
+}
+
 .cancel {
+  border: #eb2d53 1px solid;
   background: #eb2d53;
+}
+
+.cancel:hover {
+  background: #e12c50;
 }
 </style>

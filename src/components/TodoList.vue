@@ -21,7 +21,7 @@
         <tbody>
         <tr v-for="todo in getTodoList" :key="todo.id" :class="{done: todo.isCompleted}" @dblclick="markComplete(todo)">
           <td><input type="checkbox" title="mark as done" :checked="todo.isCompleted" @change="markComplete(todo)"></td>
-          <td id="title"> {{ todo.title }}</td>
+          <td :class="{'highlight':!todo.isCompleted}"> {{ todo.title }}</td>
           <td> {{ todo.createdAt | formatDate }}</td>
           <td :class="{'dueToday': isDueToday(todo.dueAt) && !todo.isCompleted}"> {{ todo.dueAt }}</td>
           <td>
@@ -122,7 +122,7 @@ tr {
 
 th {
   position: sticky;
-  background: #50c1f2;
+  background: #63c8f1;
   color: white;
   font-size: 18px;
   z-index: 1;
@@ -150,6 +150,7 @@ input[type="checkbox"] {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 8px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 input[type="checkbox"]:hover {
@@ -174,11 +175,12 @@ button {
   appearance: none;
   border-radius: 25px;
   background: white;
-  border: 1px solid #cacece;
+  border: 1px solid #d8dcdc;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 5px 7px;
   margin-left: 10px;
   font-size: 13px;
+  cursor: pointer;
 }
 
 button:focus {
@@ -186,7 +188,7 @@ button:focus {
 }
 
 button:hover {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), inset 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 button:active {
@@ -194,14 +196,14 @@ button:active {
 }
 
 #editBtn {
-  color: #00a5c2;
+  color: #50c1f2;
 }
 
 #delBtn {
   color: #eb2d53;
 }
 
-#title {
+.highlight {
   font-weight: bold;
 }
 </style>

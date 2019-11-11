@@ -1,5 +1,4 @@
 import ApiService from "@/services/api.service";
-import router from "@/router/index";
 
 const state = {
   userList: [],
@@ -52,7 +51,6 @@ const mutations = {
       if (state.userList[i].email === user.email && state.userList[i].password === user.password) {
         state.loggedUser = Object.assign({}, state.userList[i]);
         state.isLoggedIn = true;
-        router.push('/');
       }
     }
     if (state.isLoggedIn === false) {

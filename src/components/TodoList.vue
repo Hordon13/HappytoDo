@@ -51,9 +51,9 @@ export default {
       this.putTodo(todo);
     },
     isDueToday: (date) => new Date(date) <= new Date(),
-    scrollToBottom() {
+    scrollToTop() {
       const todoList = this.$refs.todoList;
-      todoList.scrollTop = todoList.scrollHeight;
+      todoList.scrollTop = 0;
     }
   },
   filters: {

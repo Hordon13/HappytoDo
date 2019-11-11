@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     scrollToBottom() {
-      this.$refs.todoList.scrollToBottom();
+      this.$refs.todoList.scrollToTop();
     },
   },
   computed: mapGetters(['getIsLoggedIn']),

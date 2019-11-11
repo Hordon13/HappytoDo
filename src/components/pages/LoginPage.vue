@@ -55,6 +55,7 @@
 <script>
 import TheHeader from "@/components/TheHeader";
 import {mapGetters, mapActions} from 'vuex';
+import router from "@/router/index";
 
 export default {
   name: "LoginPage",
@@ -76,12 +77,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchUsers', 'postUser', 'authUser']),
+    ...mapActions(['fetchUsers', 'postUser', 'authUser', 'postTodo']),
     login() {
       this.authUser(this.existingUser);
       if (!this.getLogError) {
         this.existingUser.email = '';
         this.existingUser.password = '';
+        router.push('/');
       }
     },
     async register() {
@@ -91,9 +93,24 @@ export default {
         this.existingUser.password = this.newUser.password;
         this.login();
 
+        const welcome = {
+          title: 'This is your first Todo! 😎️',
+          dueAt: 'Someday',
+          isCompleted: false,
+          createdAt: new Date(),
+        };
+
+        await this.postTodo(welcome);
+        welcome.title = 'You can add more with the form below 👇';
+        await this.postTodo(welcome);
+        welcome.title = 'Be always Happy to Do! 🥳🤩';
+        await this.postTodo(welcome);
+
         this.newUser.username = '';
         this.newUser.email = '';
         this.newUser.password = '';
+
+        await router.push('/')
       }
     }
   },

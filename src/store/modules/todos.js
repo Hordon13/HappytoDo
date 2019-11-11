@@ -13,25 +13,30 @@ const getters = {
 };
 
 const actions = {
-  async fetchTodoList({commit}) {
-    const response = await ApiService.get("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos");
+  async fetchTodoList({commit, rootState}) {
+    const userID = rootState.auth.loggedUser.id;
+    const response = await ApiService.get(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/authentication/${userID}/todos?sortBy=id&order=desc`);
     commit("setTodoList", response);
   },
-  async postTodo({commit}, newTodo) {
-    const response = await ApiService.post("http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos", newTodo);
+  async postTodo({commit, rootState}, newTodo) {
+    const userID = rootState.auth.loggedUser.id;
+    const response = await ApiService.post(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/authentication/${userID}/todos`, newTodo);
     commit("addTodo", response);
   },
-  async deleteTodo({commit}, id) {
-    await ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${id}`);
+  async deleteTodo({commit, rootState}, id) {
+    const userID = rootState.auth.loggedUser.id;
+    await ApiService.delete(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/authentication/${userID}/todos/${id}`);
     commit("removeTodo", id);
   },
-  async putTodo({commit}, updatedTodo) {
-    const response = await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${updatedTodo.id}`, updatedTodo);
+  async putTodo({commit, rootState}, updatedTodo) {
+    const userID = rootState.auth.loggedUser.id;
+    const response = await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/authentication/${userID}/todos/${updatedTodo.id}`, updatedTodo);
     commit("updateTodo", response);
   },
-  async beginEdit({commit}, todo) {
+  async beginEdit({commit, rootState}, todo) {
+    const userID = rootState.auth.loggedUser.id;
     if (state.todoUnderEdit !== null) {
-      const response = await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/todos/${state.todoUnderEdit.id}`, state.todoUnderEdit);
+      const response = await ApiService.put(`http://5d9b28bc686ed000144d1d38.mockapi.io/api/authentication/${userID}/todos/${state.todoUnderEdit.id}`, state.todoUnderEdit);
       commit("updateTodo", response);
     }
     commit("startEdit", todo)
@@ -44,7 +49,7 @@ const actions = {
 const mutations = {
   setTodoList: (state, todos) => (state.todoList = todos),
   addTodo: (state, newTodo) => {
-    state.todoList.push(newTodo);
+    state.todoList.unshift(newTodo);
   },
   removeTodo: (state, id) => (state.todoList = state.todoList.filter(todo => todo.id !== id)),
   updateTodo: (state, updatedTodo) => {

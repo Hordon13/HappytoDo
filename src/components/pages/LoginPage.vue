@@ -83,7 +83,7 @@ export default {
       if (!this.getLogError) {
         this.existingUser.email = '';
         this.existingUser.password = '';
-        router.push('/');
+        router.push('/todos');
       }
     },
     async register() {
@@ -110,7 +110,7 @@ export default {
         this.newUser.email = '';
         this.newUser.password = '';
 
-        await router.push('/')
+        await router.push('/todos')
       }
     }
   },

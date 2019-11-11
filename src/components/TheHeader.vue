@@ -6,7 +6,7 @@
       </router-link>
       <div class="login-wrapper">
         <h1 v-if="getIsLoggedIn">Hi, {{getUser.username}}!</h1>
-        <button v-if="getIsLoggedIn" @click="exitUser">log out</button>
+        <router-link v-if="getIsLoggedIn" to="/" @click.native="exitUser" tag="button">log out</router-link>
         <router-link v-else :to="routerLink" tag="button">{{routerText}}</router-link>
       </div>
     </header>

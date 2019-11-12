@@ -47,6 +47,7 @@ const mutations = {
   },
   loginUser: (state, user) => {
     state.isLoggedIn = false;
+    state.logError = false;
     for (let i = 0; i < state.userList.length; i++) {
       if (state.userList[i].email === user.email && state.userList[i].password === user.password) {
         state.loggedUser = Object.assign({}, state.userList[i]);

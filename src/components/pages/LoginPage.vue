@@ -83,7 +83,7 @@ export default {
       if (!this.getLogError) {
         this.existingUser.email = '';
         this.existingUser.password = '';
-        router.push('/');
+        router.push('/todos');
       }
     },
     async register() {
@@ -103,14 +103,14 @@ export default {
         await this.postTodo(welcome);
         welcome.title = 'You can add more with the form below 👇';
         await this.postTodo(welcome);
-        welcome.title = 'Be always Happy to Do! 🥳🤩';
+        welcome.title = 'Be Happy to Do! 🥳🤩';
         await this.postTodo(welcome);
 
         this.newUser.username = '';
         this.newUser.email = '';
         this.newUser.password = '';
 
-        await router.push('/')
+        await router.push('/todos')
       }
     }
   },

@@ -2,6 +2,8 @@
 
 This is a demo to-do application made for Happy at Work to showcase what I learned about frontend development since my last test at the end of September. I hope you will enjoy it as much as I enjoyed creating this : )
 
+❗️IMPORTANT: The app is desktop only, I did not had time to make it responsive. Please use a 13" screen.
+
 ### Features
 
 - For a personalized experience you can create an account and log in to the app
